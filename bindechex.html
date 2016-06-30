@@ -25,7 +25,7 @@ $(document).ready(function() {$("body").css("background-color","black"); });
 	color:#00FF00;
 	font-size:24pt;
 	text-align: center;
-	background-color:#222222;
+	background-color:#aaaaaa;
 }
 </style>
 </head>
@@ -36,29 +36,40 @@ $(document).ready(function() {$("body").css("background-color","black"); });
 	<div class="col-sm-4"><div class="main" id="mainBin">11111111</div><div class="main">Bin</div></div>
 </div>
 <div class="row">
-<center><div class="col-sm-12"><span contenteditable="true" class="upperbound" id="maximumNumber">8</span><span class="main">Maximum Number</span></div></center>
+<center><div class="col-sm-12"><span class="main">Maximum Number: </span><span contenteditable="true" class="upperbound" id="maximumNumber">32</span></div></center>
 </div>
-<script>
-function verifyValues() {
-if(parseInt($("#mainHex").text(), 16) === parseInt($("#mainDec").text()) === parseInt($("#mainBin").text(), 2)){
-	console.log(parseInt($("#mainHex").text(), 16) +  ", " + parseInt($("#mainDec").text()) + ", " + parseInt($("#mainBin").text(), 2));
-	return true;
-	}
-else {
-	console.log(parseInt($("#mainHex").text(), 16) +  ", " + parseInt($("#mainDec").text()) + ", " + parseInt($("#mainBin").text(), 2));
-	return false;
+<script>function verifyValues() {
+    if (parseInt($("#mainHex").text(), 16) === parseInt($("#mainDec").text()) && parseInt($("#mainDec").text()) === parseInt($("#mainBin").text(), 2)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+function makeMainsBlink(times, color1, color2, interval){
+for(times;times>=1;times--){
+setTimeout((function(){changeStyleMain('color',color2);}),times*interval);
+times--;
+setTimeout((function(){changeStyleMain('color',color1);}),times*interval);
 }
 }
-
 function nullAndEditable(obj) {
-    obj.text("0");
+    obj.css('background-color',"#222222");
+	obj.text("");
     obj.attr('contentEditable', true);
-	obj.attr('onInput', "if(verifyValues()){ newProblem() ;}")
+    obj.attr('onInput', "if(verifyValues(1)){ makeMainsBlink(10,'#000000','#00FF00',100); setTimeout((function(){newProblem();}),1200)}");
 }
 
 function setValue(obj, value, radix = 10) {
+
+    obj.css('background-color',"#000000");
     obj.text(value.toString(radix).toUpperCase());
     obj.attr('contentEditable', false);
+}
+
+function changeStyleMain(cssAttr, value) {
+    $("#mainDec").css(cssAttr, value);
+    $("#mainBin").css(cssAttr, value);
+    $("#mainHex").css(cssAttr, value);
 }
 
 function newProblem() {
