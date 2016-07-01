@@ -23,6 +23,9 @@ $(document).ready(function() {$("body").css("background-color","#EEEEEE"); });
 .boundaries {
 	font-family:'Arial';
 	color:#000000;
+.upperBound {
+	font-family:'Courier';
+	color:#00000;
 	font-size:24pt;
 	text-align: center;
 	border-style: solid;
@@ -34,6 +37,14 @@ $(document).ready(function() {$("body").css("background-color","#EEEEEE"); });
 	color:#000000;
 	font-size:24pt;
 	text-align: left;
+}
+.explanatory {
+	font-family:'Courier';
+	color:#00000;
+	font-size:16pt;
+	text-align: center;
+	background-color:#aaaaaa;
+	text-align:left;
 }
 </style>
 </head>
@@ -56,6 +67,14 @@ $(document).ready(function() {$("body").css("background-color","#EEEEEE"); });
 //a == b && b == c -> a == b == c
 //expressions can only have two sides? lame
 //returns true if all values in each field are equal
+<div class="row">
+<div class="col-sm-4"></div>
+
+<div class="col-sm-4"><center><div class="explanatory">One value is given in hexadecimal, decimal, or binary form. Fill in its representation in the other two forms in the grey boxes. Adjust the upper bound of this value in the box above.</div></div></center>
+</div>
+<div class="col-sm-4"></div>
+<script>
+//if a == b and b == c then a == b == c
 function verifyValues() {
     if (parseInt($("#mainHex").text(), 16) === parseInt($("#mainDec").text()) && parseInt($("#mainDec").text()) === parseInt($("#mainBin").text(), 2)) {
         return true;
@@ -78,6 +97,19 @@ function nullAndEditable(obj) {
 	obj.css('border-width',"1px");
 	obj.text("Enter here...");
 	obj.one("focus", (function(){obj.text("");}));
+
+function makeMainsBlink(times, color1, color2, interval) {
+    for (times; times >= 1; times--) {
+        setTimeout((function() {  changeStyleMain('color', color2); }), times * interval);
+        times--;
+        setTimeout((function() { changeStyleMain('color', color1); }), times * interval);
+    }
+}
+
+function nullAndEditable(obj) {
+    obj.css('background-color', "#aaaaaa");
+	obj.css('color', "#000000");
+    obj.text("");
     obj.attr('contentEditable', true);
 	//when values are correct, blur all, blink a bunch, blur again
     obj.attr('onInput', "if(verifyValues(1)){ blurAll(); makeMainsBlink(10,'#EEEEEE','#0402FC',100); setTimeout((function(){blurAll(); newProblem();}),1100); }");
@@ -85,6 +117,8 @@ function nullAndEditable(obj) {
 //sets the fixed value which the user needs to convert
 function setValue(obj, value, radix = 10) {
 	obj.css('border-width',"0px");
+
+    obj.css('background-color', "#000000");
     obj.text(value.toString(radix).toUpperCase());
     obj.attr('contentEditable', false);
 }
