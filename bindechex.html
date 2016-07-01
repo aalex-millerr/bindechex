@@ -22,10 +22,18 @@ $(document).ready(function() {$("body").css("background-color","black"); });
 }
 .upperBound {
 	font-family:'Courier';
-	color:#00FF00;
+	color:#00000;
 	font-size:24pt;
 	text-align: center;
 	background-color:#aaaaaa;
+}
+.explanatory {
+	font-family:'Courier';
+	color:#00000;
+	font-size:16pt;
+	text-align: center;
+	background-color:#aaaaaa;
+	text-align:left;
 }
 </style>
 </head>
@@ -38,30 +46,41 @@ $(document).ready(function() {$("body").css("background-color","black"); });
 <div class="row">
 <center><div class="col-sm-12"><span class="main">Maximum Number: </span><span contenteditable="true" class="upperbound" id="maximumNumber">32</span></div></center>
 </div>
-<script>function verifyValues() {
+<div class="row">
+<div class="col-sm-4"></div>
+
+<div class="col-sm-4"><center><div class="explanatory">One value is given in hexadecimal, decimal, or binary form. Fill in its representation in the other two forms in the grey boxes. Adjust the upper bound of this value in the box above.</div></div></center>
+</div>
+<div class="col-sm-4"></div>
+<script>
+//if a == b and b == c then a == b == c
+function verifyValues() {
     if (parseInt($("#mainHex").text(), 16) === parseInt($("#mainDec").text()) && parseInt($("#mainDec").text()) === parseInt($("#mainBin").text(), 2)) {
         return true;
     } else {
         return false;
     }
 }
-function makeMainsBlink(times, color1, color2, interval){
-for(times;times>=1;times--){
-setTimeout((function(){changeStyleMain('color',color2);}),times*interval);
-times--;
-setTimeout((function(){changeStyleMain('color',color1);}),times*interval);
+
+function makeMainsBlink(times, color1, color2, interval) {
+    for (times; times >= 1; times--) {
+        setTimeout((function() {  changeStyleMain('color', color2); }), times * interval);
+        times--;
+        setTimeout((function() { changeStyleMain('color', color1); }), times * interval);
+    }
 }
-}
+
 function nullAndEditable(obj) {
-    obj.css('background-color',"#222222");
-	obj.text("");
+    obj.css('background-color', "#aaaaaa");
+	obj.css('color', "#000000");
+    obj.text("");
     obj.attr('contentEditable', true);
     obj.attr('onInput', "if(verifyValues(1)){ makeMainsBlink(10,'#000000','#00FF00',100); setTimeout((function(){newProblem();}),1200)}");
 }
 
 function setValue(obj, value, radix = 10) {
 
-    obj.css('background-color',"#000000");
+    obj.css('background-color', "#000000");
     obj.text(value.toString(radix).toUpperCase());
     obj.attr('contentEditable', false);
 }
