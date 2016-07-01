@@ -15,17 +15,25 @@ $(document).ready(function() {$("body").css("background-color","#EEEEEE"); });
 </script>
 <style>
 .main {
-	font-family:'Courier';
+	font-family:'Arial';
 	color:#0402FC;
 	font-size:24pt;
 	text-align: center;
 }
 .boundaries {
-	font-family:'Courier';
-	color:#0402FC;
+	font-family:'Arial';
+	color:#000000;
 	font-size:24pt;
 	text-align: center;
-	background-color:#aaaaaa;
+	border-style: solid;
+	border-color: #000000;
+	border-width: 1px;
+}
+#radioButtons {
+	font-family:'Arial';
+	color:#000000;
+	font-size:24pt;
+	text-align: left;
 }
 </style>
 </head>
@@ -36,7 +44,13 @@ $(document).ready(function() {$("body").css("background-color","#EEEEEE"); });
 	<div class="col-sm-4"><div class="main" id="mainBin">11111111</div><div class="main">Bin</div></div>
 </div>
 <div class="row">
-<center><div class="col-sm-12"><span class="main">Range: </span><span contenteditable="true" class="boundaries" id="minimumNumber">16</span><span class="main"> to </span><span contenteditable="true" class="boundaries" id="maximumNumber">32</span></div></center>
+<center><div class="col-sm-12"><span class="main">Range: </span><span contenteditable="true" class="boundaries" id="minimumNumber">0</span><span class="main"> to </span><span contenteditable="true" class="boundaries" id="maximumNumber">32</span></div></center>
+</div>
+<div class="row">
+<div class="col-sm-4"></div>
+<div class="col-sm-4" id="radioButtons">Convert from:<br><form><input type="radio" value="any" name="name">Any base</input><br><input name="name" type="radio" value="bin">Binary</input><br><input name="name" type="radio" value="dec">Decimal</input><br><input type="radio" name="name" value="hex">Hexadecimal</input></form></div>
+
+<div class="col-sm-4"></div>
 </div>
 <script>
 //a == b && b == c -> a == b == c
