@@ -10,19 +10,19 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 <script>
-$(document).ready(function() {$("body").css("background-color","black"); });
+$(document).ready(function() {$("body").css("background-color","#EEEEEE"); });
 
 </script>
 <style>
 .main {
 	font-family:'Courier';
-	color:#00FF00;
+	color:#0402FC;
 	font-size:24pt;
 	text-align: center;
 }
-.upperBound {
+.boundaries {
 	font-family:'Courier';
-	color:#00FF00;
+	color:#0402FC;
 	font-size:24pt;
 	text-align: center;
 	background-color:#aaaaaa;
@@ -36,15 +36,20 @@ $(document).ready(function() {$("body").css("background-color","black"); });
 	<div class="col-sm-4"><div class="main" id="mainBin">11111111</div><div class="main">Bin</div></div>
 </div>
 <div class="row">
-<center><div class="col-sm-12"><span class="main">Maximum Number: </span><span contenteditable="true" class="upperbound" id="maximumNumber">32</span></div></center>
+<center><div class="col-sm-12"><span class="main">Range: </span><span contenteditable="true" class="boundaries" id="minimumNumber">16</span><span class="main"> to </span><span contenteditable="true" class="boundaries" id="maximumNumber">32</span></div></center>
 </div>
-<script>function verifyValues() {
+<script>
+//a == b && b == c -> a == b == c
+//expressions can only have two sides? lame
+//returns true if all values in each field are equal
+function verifyValues() {
     if (parseInt($("#mainHex").text(), 16) === parseInt($("#mainDec").text()) && parseInt($("#mainDec").text()) === parseInt($("#mainBin").text(), 2)) {
         return true;
     } else {
         return false;
     }
 }
+//make all displays blink, only called when verifyValues returns true
 function makeMainsBlink(times, color1, color2, interval){
 for(times;times>=1;times--){
 setTimeout((function(){changeStyleMain('color',color2);}),times*interval);
@@ -52,29 +57,46 @@ times--;
 setTimeout((function(){changeStyleMain('color',color1);}),times*interval);
 }
 }
+//Make this where values are entered
 function nullAndEditable(obj) {
-    obj.css('background-color',"#222222");
-	obj.text("");
+    obj.css('border-style',"solid");
+	obj.css('border-color',"#000000");
+	obj.css('border-width',"1px");
+	obj.text("Enter here...");
+	obj.one("focus", (function(){obj.text("");}));
     obj.attr('contentEditable', true);
-    obj.attr('onInput', "if(verifyValues(1)){ makeMainsBlink(10,'#000000','#00FF00',100); setTimeout((function(){newProblem();}),1200)}");
+	//when values are correct, blur all, blink a bunch, blur again
+    obj.attr('onInput', "if(verifyValues(1)){ blurAll(); makeMainsBlink(10,'#EEEEEE','#0402FC',100); setTimeout((function(){blurAll(); newProblem();}),1100); }");
 }
-
+//sets the fixed value which the user needs to convert
 function setValue(obj, value, radix = 10) {
-
-    obj.css('background-color',"#000000");
+	obj.css('border-width',"0px");
     obj.text(value.toString(radix).toUpperCase());
     obj.attr('contentEditable', false);
 }
-
+//change some attribute of each of the three fields, only called by blinkmains as it stands
 function changeStyleMain(cssAttr, value) {
     $("#mainDec").css(cssAttr, value);
     $("#mainBin").css(cssAttr, value);
     $("#mainHex").css(cssAttr, value);
 }
+//blur all text so that "Enter here..." disappears
+function blurAll(){
+	$("#mainDec").blur();
+	$("#mainBin").blur();
+	$("#mainHex").blur();
+}
+//newNum logic (see first 4 commits) abstractified and also copypasted from stackexchange/MDN
+//credits to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 function newProblem() {
-    var newNum = Math.floor(Math.random() * parseInt($("#maximumNumber").text()));
-    var comp = Math.floor(Math.random() * 3);
+	//random integer between [minimumNumber, maximumNumber]
+    var newNum = getRandomInt(parseInt($("#minimumNumber").text()), parseInt($("#maximumNumber").text()));
+	//randomly pick one of the three
+	var comp = Math.floor(Math.random() * 3);
     if (comp === 0) {
         nullAndEditable($("#mainDec"));
         nullAndEditable($("#mainBin"));
