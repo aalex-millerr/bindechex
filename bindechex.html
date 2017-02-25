@@ -65,11 +65,11 @@ function verifyValues() {
 }
 //make all displays blink, only called when verifyValues returns true
 function makeMainsBlink(times, color1, color2, interval){
-for(times;times>=1;times--){
-setTimeout((function(){changeStyleMain('color',color2);}),times*interval);
-times--;
-setTimeout((function(){changeStyleMain('color',color1);}),times*interval);
-}
+	for(times;times>=1;times--){
+		setTimeout((function(){changeStyleMain('color',color2);}),times*interval);
+		times--;
+		setTimeout((function(){changeStyleMain('color',color1);}),times*interval);
+	}
 }
 //Make this where values are entered
 function nullAndEditable(obj) {
@@ -78,15 +78,15 @@ function nullAndEditable(obj) {
 	obj.css('border-width',"1px");
 	obj.text("Enter here...");
 	obj.one("focus", (function(){obj.text("");}));
-    obj.attr('contentEditable', true);
+  	obj.attr('contentEditable', true);
 	//when values are correct, blur all, blink a bunch, blur again
-    obj.attr('onInput', "if(verifyValues(1)){ blurAndLockMains(); makeMainsBlink(10,'#EEEEEE','#0402FC',100); setTimeout((function(){blurAndLockMains(); newProblem();}),1100); }");
+ 	obj.attr('onInput', "if(verifyValues(1)){ blurAndLockMains(); makeMainsBlink(10,'#EEEEEE','#0402FC',100); setTimeout((function(){blurAndLockMains(); newProblem();}),1100); }");
 }
 //sets the fixed value which the user needs to convert
 function setValue(obj, value, radix = 10) {
 	obj.css('border-width',"0px");
-    obj.text(value.toString(radix).toUpperCase());
-    obj.attr('contentEditable', false);
+   	obj.text(value.toString(radix).toUpperCase());
+  	obj.attr('contentEditable', false);
 }
 //change some attribute of each of the three fields, only called by blinkmains as it stands
 function changeStyleMain(cssAttr, value) {
@@ -113,7 +113,8 @@ function newProblem() {
 	//random integer between [minimumNumber, maximumNumber]
     var newNum = getRandomInt(parseInt($("#minimumNumber").text()), parseInt($("#maximumNumber").text()));
 	//randomly pick one of the three
-	var comp = Math.floor(Math.random() * 3);
+	
+    var comp = Math.floor(Math.random() * 3);
     if (comp === 0) {
         nullAndEditable($("#mainDec"));
         nullAndEditable($("#mainBin"));
